@@ -88,6 +88,9 @@ if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
 then
     debug "Dumping config file."
     cat $AWSEB_CONFIG_FILE
+    echo PWD=`pwd`
+    echo AWSEB_CONFIG_FILE=$AWSEB_CONFIG_FILE
+    ls .elasticbeanstalk/config
 fi
 
 debug "Checking if eb exists and can connect. $AWSEB_TOOL status"
