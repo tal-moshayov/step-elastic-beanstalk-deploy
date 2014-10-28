@@ -93,17 +93,32 @@ then
     ls .elasticbeanstalk/config
 fi
 
-debug "Checking if eb exists and can connect. $AWSEB_TOOL status"
-$AWSEB_TOOL --verbose status
-if [ $? -ne "0" ]
-then
-    fail "EB is not working or is not set up correctly ($?)"
-fi
-
+debug "Setting up AWS tools repository (git commands)"
 sudo bash $AWSEB_ROOT/AWSDevTools/Linux/AWSDevTools-RepositorySetup.sh
 if [ $? -ne "0" ]
 then
     fail "Unknown error with EB tools."
+fi
+
+debug "git aws.config"
+echo -e "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n" | git aws.config
+if [ $? -ne "0" ]
+then
+    fail "Failed configurating git"
+fi
+
+debug "eb init"
+echo -e "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_KEY\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_SECRET\n1\n\n\n1\n53\n2\nN\n1\n" | $AWSEB_TOOL init
+if [ $? -ne "0" ]
+then
+    fail "Failed initializing EB"
+fi
+
+debug "Checking if eb exists and can connect. $AWSEB_TOOL status"
+$AWSEB_TOOL --verbose status
+if [ $? -ne "0" ]
+then
+    fail "EB is not working or is not set up correctly"
 fi
 
 debug "Pushing to AWS eb servers."
