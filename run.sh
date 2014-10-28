@@ -94,7 +94,7 @@ then
 fi
 
 debug "Setting up AWS tools repository (git commands)"
-sudo bash $AWSEB_ROOT/AWSDevTools/Linux/AWSDevTools-RepositorySetup.sh
+bash $AWSEB_ROOT/AWSDevTools/Linux/AWSDevTools-RepositorySetup.sh
 if [ $? -ne "0" ]
 then
     fail "Unknown error with EB tools."
