@@ -21,7 +21,8 @@ from lib.elasticbeanstalk.request import TemplateSpecification
 from lib.utility import misc, shell_utils
 from scli import api_wrapper, config_file, prompt
 from scli.constants import DevToolsEndpoint, DevToolsDefault, DefaultAppSource, \
-    OptionSettingVPC, OptionSettingEnvironmentType, \
+    OptionSettingVPC, OptionSettingEnvironmentType, OptionSettingApplicationEnvironment, \
+    OptionSettingContainerPrefix, OptionSettingTemplatePrefix, \
     ParameterName as PName, ParameterSource as PSource, ServiceDefault, ServiceEndpoint
 from scli.parameter import Parameter
 from scli.resources import DevToolsMessage, ValidationMessage
@@ -131,7 +132,8 @@ def apply_environment_type(parameter_pool, template_spec, stack_name, env_name, 
                 continue
             
             for option_name in option_settings[namespace].keys():
-                if namespace + u'-' + option_name not in option_defs:
+                if not is_customizable_namespace(namespace)\
+                    and namespace + u'-' + option_name not in option_defs:
                     remove_option_setting(option_settings, option_to_remove, 
                                           namespace, option_name, False)
                     removed = True
@@ -162,7 +164,7 @@ def check_app_version(parameter_pool, eb_client = None):
                 and not TerminalBase.ask_confirmation(DevToolsMessage.PushLocalHead):
                 return ServiceDefault.DEFAULT_VERSION_NAME
             else:
-                if shell_utils.git_aws_push(False):
+                if shell_utils.git_aws_push(push_only=True, quiet=False):
                     version_name = get_head_version(parameter_pool, 
                                                     eb_client=eb_client, 
                                                     quiet=False)
@@ -262,4 +264,12 @@ def get_option_def(eb_client, app_name, namespace, option_name,
     else:
         return None
     
-    
+
+def is_customizable_namespace(namespace):
+    if namespace.startswith(OptionSettingApplicationEnvironment.Namespace)\
+        or namespace.startswith(OptionSettingContainerPrefix) \
+        or namespace.startswith(OptionSettingTemplatePrefix):
+        return True
+    else:
+        return False
+

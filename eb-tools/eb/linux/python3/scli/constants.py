@@ -18,7 +18,7 @@
 from lib.utility.basetype import ValuedEnum
 from lib.utility.basetype import OrderedEnum
 
-EbCliVersion = 'v2.6.0'
+EbCliVersion = 'v2.6.3'
 
 class Key(object):
     Default = 'default'
@@ -263,6 +263,7 @@ class DevToolsDefault(object):
     VersionNameMask = 'git-{0}-{1}'
     
     AwsPush = ['git', 'aws.push']
+    AwsCreateAppVersion = ['git', 'aws.createapplicationversion']
     
     
 #----------------------------------------------
@@ -651,6 +652,7 @@ LocalOptionSettings = {
 }
 
 OptionSettingContainerPrefix = 'aws:elasticbeanstalk:container'
+OptionSettingTemplatePrefix = 'aws:cloudformation:template'
 
 class OptionSettingApplicationEnvironment(object): 
     Namespace = 'aws:elasticbeanstalk:application:environment'

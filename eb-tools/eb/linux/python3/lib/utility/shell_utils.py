@@ -144,10 +144,12 @@ def get_repo_head_hash(quiet = False):
             raise EBSCliException(DevToolsMessage.GitCommandError.format(ex.message))
 
 
-def git_aws_push(quiet = False):
+def git_aws_push(push_only = False, quiet = False):
     output = prompt.info if quiet else prompt.result
+    cmd = DevToolsDefault.AwsCreateAppVersion if push_only else DevToolsDefault.AwsPush
+    
     try:
-        output(misc.to_unicode(call(DevToolsDefault.AwsPush), locale.getpreferredencoding())) 
+        output(misc.to_unicode(call(cmd, quiet=quiet), locale.getpreferredencoding())) 
         return True
     except subprocess.CalledProcessError as ex:
         # Git returned with an error code

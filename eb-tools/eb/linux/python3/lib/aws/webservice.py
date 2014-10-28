@@ -23,7 +23,7 @@ except ImportError:
 import logging
 
 
-import requests
+from . import requests
 from scli import prompt    
 from scli.constants import ServiceDefault
 from lib.aws.exception import AwsErrorCode
