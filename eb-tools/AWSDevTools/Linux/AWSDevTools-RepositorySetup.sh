@@ -35,3 +35,5 @@ git config alias.aws.elasticbeanstalk.push "!$GIT_DIRECTORY/AWSDevTools/aws.elas
 git config alias.aws.push '!git aws.elasticbeanstalk.push'
 git config alias.aws.elasticbeanstalk.config "!$GIT_DIRECTORY/AWSDevTools/aws.elasticbeanstalk.config"
 git config alias.aws.config '!git aws.elasticbeanstalk.config'
+git config alias.aws.elasticbeanstalk.createapplicationversion "!$GIT_DIRECTORY/AWSDevTools/aws.elasticbeanstalk.createapplicationversion"
+git config alias.aws.createapplicationversion '!git aws.elasticbeanstalk.createapplicationversion'
