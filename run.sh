@@ -94,10 +94,10 @@ then
 fi
 
 debug "Checking if eb exists and can connect. $AWSEB_TOOL status"
-$AWSEB_TOOL status
+$AWSEB_TOOL --verbose status
 if [ $? -ne "0" ]
 then
-    fail "EB is not working or is not set up correctly."
+    fail "EB is not working or is not set up correctly ($?)"
 fi
 
 sudo bash $AWSEB_ROOT/AWSDevTools/Linux/AWSDevTools-RepositorySetup.sh
