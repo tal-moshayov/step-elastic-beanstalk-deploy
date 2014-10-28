@@ -90,7 +90,7 @@ then
     cat $AWSEB_CONFIG_FILE
 fi
 
-debug "Checking if eb exists and can connect."
+debug "Checking if eb exists and can connect. $AWSEB_TOOL status"
 $AWSEB_TOOL status
 if [ $? -ne "0" ]
 then
