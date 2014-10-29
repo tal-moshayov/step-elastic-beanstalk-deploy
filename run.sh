@@ -103,17 +103,16 @@ then
     fail "Unknown error with EB tools."
 fi
 
-debug "git aws.config"
-if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
-then
-    echo "echo -e \"$WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n\" | git aws.config"
-fi
-
-echo -e "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n" | git aws.config
-if [ $? -ne "0" ]
-then
-    fail "Failed configurating git"
-fi
+# debug "git aws.config"
+# if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
+# then
+#     echo "echo -e \"$WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n\" | git aws.config"
+# fi
+# echo -e "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n" | git aws.config
+# if [ $? -ne "0" ]
+# then
+#     fail "Failed configurating git"
+# fi
 
 debug "eb init"
 if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
