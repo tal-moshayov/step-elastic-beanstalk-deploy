@@ -88,9 +88,6 @@ if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
 then
     debug "Dumping config file."
     cat $AWSEB_CONFIG_FILE
-    echo PWD=`pwd`
-    echo AWSEB_CONFIG_FILE=$AWSEB_CONFIG_FILE
-    ls .elasticbeanstalk/config
 fi
 
 sudo pip install boto
@@ -110,8 +107,8 @@ debug "git aws.config"
 if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
 then
     echo "echo -e \"$WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n\" | git aws.config"
-
 fi
+
 echo -e "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_REGION\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n" | git aws.config
 if [ $? -ne "0" ]
 then
@@ -119,7 +116,12 @@ then
 fi
 
 debug "eb init"
-echo -e "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_KEY\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_SECRET\n1\n\n\n1\n53\n2\nN\n1\n" | $AWSEB_TOOL init
+if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
+then
+    debug "echo -e \"$WERCKER_ELASTIC_BEANSTALK_DEPLOY_KEY\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_SECRET\n1\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n1\n47\n2\nN\n1\n\" | $AWSEB_TOOL init"
+fi
+
+echo -e "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_KEY\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_SECRET\n1\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n1\n47\n2\nN\n1\n" | $AWSEB_TOOL init
 if [ $? -ne "0" ]
 then
     fail "Failed initializing EB"
@@ -136,6 +138,15 @@ debug "git status: `git status`"
 debug "git branch: `git branch`"
 debug "aws version: `aws --version`"
 debug "eb version: `$AWSEB_TOOL --version`"
+debug "PWD=`pwd`"
+debug "AWSEB_CONFIG_FILE=$AWSEB_CONFIG_FILE"
+
+debug "git checkout elastic-beanstalk"
+git checkout elastic-beanstalk
+if [ $? -ne "0" ]
+then
+    fail "EB is not working or is not set up correctly"
+fi
 
 debug "Pushing to AWS eb servers."
 git aws.push
