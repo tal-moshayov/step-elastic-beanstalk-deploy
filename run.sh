@@ -93,6 +93,12 @@ then
     ls .elasticbeanstalk/config
 fi
 
+pip install boto
+if [ $? -ne "0" ]
+then
+    fail "Could not install boto, which is needed for eb"
+fi
+
 debug "Setting up AWS tools repository (git commands)"
 bash $AWSEB_ROOT/AWSDevTools/Linux/AWSDevTools-RepositorySetup.sh
 if [ $? -ne "0" ]
