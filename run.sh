@@ -132,6 +132,11 @@ then
     fail "EB is not working or is not set up correctly"
 fi
 
+debug "git status: `git status`"
+debug "git branch: `git branch`"
+debug "aws version: `aws --version`"
+debug "eb version: `$AWSEB_TOOL --version`"
+
 debug "Pushing to AWS eb servers."
 git aws.push
 if [ $? -ne "0" ]
