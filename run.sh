@@ -140,6 +140,8 @@ debug "aws version: `aws --version`"
 debug "eb version: `$AWSEB_TOOL --version`"
 debug "PWD=`pwd`"
 debug "AWSEB_CONFIG_FILE=$AWSEB_CONFIG_FILE"
+export GIT_TRACE=1 
+export GIT_CURL_VERBOSE=1 
 
 debug "git checkout elastic-beanstalk"
 git checkout elastic-beanstalk
