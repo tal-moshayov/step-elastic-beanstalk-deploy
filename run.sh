@@ -33,6 +33,11 @@ then
     warn "Debug mode turned on, this can dump potentially dangerous information to log files."
 fi
 
+if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_BRANCH" ]
+then
+    fail "Missing or empty option BRANCH, please check wercker.yml"
+fi
+
 AWSEB_ROOT="$WERCKER_STEP_ROOT/eb-tools"
 AWSEB_TOOL="$AWSEB_ROOT/eb/linux/python2.7/eb"
 
@@ -115,11 +120,6 @@ fi
 # fi
 
 debug "eb init"
-if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
-then
-    debug "echo -e \"$WERCKER_ELASTIC_BEANSTALK_DEPLOY_KEY\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_SECRET\n1\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n1\n47\n2\nN\n1\n\" | $AWSEB_TOOL init"
-fi
-
 echo -e "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_KEY\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_SECRET\n1\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME\n$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ENV_NAME\n1\n47\n2\nN\n1\n" | $AWSEB_TOOL init
 if [ $? -ne "0" ]
 then
@@ -133,27 +133,30 @@ then
     fail "EB is not working or is not set up correctly"
 fi
 
-debug "git status: `git status`"
-debug "git branch: `git branch`"
-debug "aws version: `aws --version`"
-debug "eb version: `$AWSEB_TOOL --version`"
-debug "PWD=`pwd`"
-debug "AWSEB_CONFIG_FILE=$AWSEB_CONFIG_FILE"
-export GIT_TRACE=1 
-export GIT_CURL_VERBOSE=1 
+if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_DEBUG" ]
+then
+    debug "git status: `git status`"
+    debug "git branch: `git branch`"
+    debug "aws version: `aws --version`"
+    debug "eb version: `$AWSEB_TOOL --version`"
+    debug "PWD=`pwd`"
+    debug "AWSEB_CONFIG_FILE=$AWSEB_CONFIG_FILE"
+    export GIT_TRACE=1 
+    export GIT_CURL_VERBOSE=1 
+end
 
-debug "git checkout elastic-beanstalk"
-git checkout elastic-beanstalk
+debug "Checking out the source from $WERCKER_ELASTIC_BEANSTALK_DEPLOY_BRANCH"
+git checkout $WERCKER_ELASTIC_BEANSTALK_DEPLOY_BRANCH
 if [ $? -ne "0" ]
 then
-    fail "EB is not working or is not set up correctly"
+    fail "git checkout failed for branch $WERCKER_ELASTIC_BEANSTALK_DEPLOY_BRANCH"
 fi
 
 debug "Pushing to AWS eb servers."
 git aws.push
 if [ $? -ne "0" ]
 then
-    fail "Unable to push to Amazon Elastic Beanstalk"   
+    fail "Unable to push to Amazon Elastic Beanstalk"
 fi
 
 success 'Successfully pushed to Amazon Elastic Beanstalk'
