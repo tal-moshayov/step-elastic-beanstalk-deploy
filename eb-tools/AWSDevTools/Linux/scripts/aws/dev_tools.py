@@ -148,10 +148,9 @@ class DevTools:
 	try:
 	    deployment_response = self.eb.update_environment(environment_name=environment, version_label = version_label)
 	except InsufficientPrivileges as e: 
-	    sys.exit("Error: Insufficient permissions to create the AWS Elastic Beanstalk application version. You must use AWS credentials that have the correct AWS Elastic Beanstalk permissions")
+	    sys.exit("Error: Insufficient permissions to create the AWS Elastic Beanstalk application version. You must use AWS credentials that have the correct AWS Elastic Beanstalk permissions.\n\tMessage=" + e.message)
 	except Exception as e:
-	    print "ERR: [[" + e.message + "]]"
-	    sys.exit("Error: Failed to update the AWS Elastic Beanstalk environment")
+	    sys.exit("Error: Failed to update the AWS Elastic Beanstalk environment.\n\tMessage=" + e.message)
  
     def create_eb_application_version(self, commit_message, bucket_name, archived_file_name, version_label):
 	try:
