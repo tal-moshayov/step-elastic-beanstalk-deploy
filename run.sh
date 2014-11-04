@@ -2,6 +2,12 @@
 set +e
 
 cd $HOME
+
+if [ -z "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ELASTIC_BEANSTALK_DEPLOY_SKIP"  ]; then
+    echo "Skipping AWS Elastic beanstalk deployment step"
+    return 0;
+fi
+
 if [ ! -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME" ]
 then
     fail "Missing or empty option APP_NAME, please check wercker.yml"
