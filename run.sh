@@ -39,7 +39,7 @@ then
     warn "Debug mode turned on, this can dump potentially dangerous information to log files."
 fi
 
-if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_BRANCH" ]
+if [ -z "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_BRANCH" ]
 then
     fail "Missing or empty option BRANCH, please check wercker.yml"
 fi
