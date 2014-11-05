@@ -3,8 +3,8 @@ set +e
 
 cd $HOME
 
-if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ELASTIC_BEANSTALK_DEPLOY_SKIP"  ]; then
-    echo "Skipping AWS Elastic beanstalk deployment step"
+if [ -n "$WERCKER_ELASTIC_BEANSTALK_DEPLOY_ELASTIC_BEANSTALK_DEPLOY_SKIP"  ] || [ -n "$ELASTIC_BEANSTALK_DEPLOY_SKIP" ]; then
+    echo "Skipping AWS Elastic beanstalk deployment step!"
     return 0;
 fi
 
