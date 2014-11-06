@@ -74,7 +74,8 @@ then
     cat $AWSEB_CREDENTIAL_FILE
 fi
 
-debug "Setting up config file."
+debug "Setting up config file ($AWSEB_CONFIG_FILE)."
+rm -f $AWSEB_CONFIG_FILE
 cat <<EOT >> $AWSEB_CONFIG_FILE
 [global]
 ApplicationName=$WERCKER_ELASTIC_BEANSTALK_DEPLOY_APP_NAME
