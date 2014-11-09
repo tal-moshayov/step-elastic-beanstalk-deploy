@@ -151,7 +151,7 @@ then
     debug "AWSEB_CONFIG_FILE=$AWSEB_CONFIG_FILE"
     export GIT_TRACE=1 
     export GIT_CURL_VERBOSE=1 
-end
+fi
 
 debug "Checking out the source from $WERCKER_ELASTIC_BEANSTALK_DEPLOY_BRANCH"
 git checkout $WERCKER_ELASTIC_BEANSTALK_DEPLOY_BRANCH
